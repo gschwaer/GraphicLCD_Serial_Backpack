@@ -14,11 +14,15 @@ This code is released under the Creative Commons Attribution Share-Alike 3.0
 
 #include <avr/interrupt.h>
 #include "glcdbp.h"
+#include "serial.h"
 
 extern volatile uint8_t 	rxRingBuffer[BUF_DEPTH];
 extern volatile uint16_t 	rxRingHead;
 extern volatile uint16_t	rxRingTail;
 extern volatile uint8_t	 bufferSize;
+extern volatile uint8_t 	rx_pause;
+
+#define XOFF           0x13
 
 // Handler for USART receive interrupts. This is basically just a stack push
 //  for the FIFO we use to store incoming commands. Note that there is no
@@ -30,4 +34,9 @@ ISR(USART_RX_vect)
 	if (rxRingHead == BUF_DEPTH) rxRingHead = 0;
 	bufferSize++;
 	rxRingBuffer[rxRingHead++] = UDR0;
+
+	if(bufferSize > RX_BUFFER_XOFF){
+		putChar(XOFF);
+		rx_pause = 1;
+	}
 }

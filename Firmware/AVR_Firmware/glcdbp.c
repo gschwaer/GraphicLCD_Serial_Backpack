@@ -31,6 +31,7 @@ volatile uint8_t    bufferSize = 0;
 volatile uint16_t   rxRingHead = 0;
 volatile uint16_t   rxRingTail = 0;
 volatile uint8_t    reverse = 0;
+volatile uint8_t    rx_pause = 0;
 
 int main(void)
 {

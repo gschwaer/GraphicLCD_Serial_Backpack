@@ -16,6 +16,10 @@ This code is released under the Creative Commons Attribution Share-Alike 3.0
 
 #define BUF_DEPTH 256 // Ring buffer size. Originally set to 416.
 
+// software flow control
+#define RX_BUFFER_XON  20
+#define RX_BUFFER_XOFF (BUF_DEPTH - 90)
+
 // These typedefs will be used throughout the project to track the type of
 //  display we're using as well as whether we want the pixel(s) at the heart
 //  of a command to be turned on or off.
