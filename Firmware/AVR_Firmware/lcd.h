@@ -39,7 +39,7 @@ void    lcdDrawSprite(uint8_t x, uint8_t y, uint8_t sprite, char angle, PIX_VAL 
 //   lifted them from something called "Sinister 7". I don't know what that is.
 //   What I *do* know is that the original codes were upside-down, and I had
 //   to write a python script to reverse the bit order of these bitmaps.
-static char characterArray[475] PROGMEM = {
+static const char characterArray[475] PROGMEM = {
 	0x00,0x00,0x00,0x00,0x00,/*space*/
 	0x00,0x6f,0x6f,0x00,0x00,/*!*/
 	0x00,0x07,0x00,0x07,0x00,/*"*/
@@ -139,7 +139,7 @@ static char characterArray[475] PROGMEM = {
 
 // The SparkFun Logo rendered as a sprite 10 pixels wide and 16 pixels high.
 //  The first ten bytes are the top half, the second ten, the bottom half.
-static char logoArray[20] PROGMEM = {
+static const char logoArray[20] PROGMEM = {
   0x80, 0xc0, 0x40, 0x0c, 0x3e,
   0xfe, 0xf2, 0xe0, 0xf0, 0xe0,
   0xff, 0x7f, 0x3f, 0x1f, 0x1f,
@@ -149,7 +149,7 @@ static char logoArray[20] PROGMEM = {
 
 // This is our block of sprites. It's an array of 128 8x8 sprites, mostly
 //  unused.
-static char spriteArray[1024] PROGMEM = {
+static const char spriteArray[1024] PROGMEM = {
   0x00, 0x3f, 0x42, 0x91, 0x82, 0x91, 0x42, 0x3f, // Pac-man ghost
   0x81, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x81, // four corners
   0x10, 0x20, 0x40, 0xff, 0xff, 0x40, 0x20, 0x10, // up arrow.
@@ -283,7 +283,7 @@ static char spriteArray[1024] PROGMEM = {
   
 // This is our block of sprite masks. The mask for the sprite should be a '1'
 //  anywhere we want the original background to show through.
-static char maskArray[1024] PROGMEM = {
+static const char maskArray[1024] PROGMEM = {
   0xff, 0xc0, 0x81, 0x00, 0x01, 0x00, 0x81, 0xc0, // Pac-man ghost
   0x7e, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7e,
   0xef, 0xdf, 0xbf, 0x00, 0x00, 0xbf, 0xdf, 0xef, // up arrow

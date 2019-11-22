@@ -12,7 +12,7 @@ This code is released under the Creative Commons Attribution Share-Alike 3.0
 
 ***************************************************************************/
 
-#include <AVR/interrupt.h>
+#include <avr/interrupt.h>
 #include "glcdbp.h"
 
 extern volatile uint8_t 	rxRingBuffer[BUF_DEPTH];

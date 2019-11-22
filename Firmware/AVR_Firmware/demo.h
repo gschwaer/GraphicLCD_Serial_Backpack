@@ -17,14 +17,14 @@ This code is released under the Creative Commons Attribution Share-Alike 3.0
 
 #include <avr/pgmspace.h> 
 
-static char string_1[] PROGMEM = "Well here we are again.\0";
-static char string_2[] PROGMEM = "It's always such a pleasure.\0";
-static char string_3[] PROGMEM = "Remember how you tried to kill me twice?\0";
-static char string_4[] PROGMEM = "Oh how we laughed and laughed!\0";
-static char string_5[] PROGMEM = "Except I wasn't laughing.\0";
-static char string_6[] PROGMEM = "Under the circumstances, I've been SHOCKINGLY nice.\0";
+static const char string_1[] PROGMEM = "Well here we are again.\0";
+static const char string_2[] PROGMEM = "It's always such a pleasure.\0";
+static const char string_3[] PROGMEM = "Remember how you tried to kill me twice?\0";
+static const char string_4[] PROGMEM = "Oh how we laughed and laughed!\0";
+static const char string_5[] PROGMEM = "Except I wasn't laughing.\0";
+static const char string_6[] PROGMEM = "Under the circumstances, I've been SHOCKINGLY nice.\0";
 
-static PGM_P wantYouGone[] PROGMEM =
+static PGM_P const wantYouGone[] PROGMEM =
 {
   string_1,
   string_2,
