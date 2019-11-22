@@ -25,7 +25,6 @@ This code is released under the Creative Commons Attribution Share-Alike 3.0
 extern volatile uint8_t 	rxRingBuffer[BUF_DEPTH];
 extern volatile uint16_t 	rxRingHead;
 extern volatile uint16_t	rxRingTail;
-extern volatile uint8_t	  bufferSize;
 extern volatile uint8_t   reverse;
 
 // These variables are defined in lcd.c, and form the backbone of the pseudo
@@ -81,7 +80,7 @@ void uiStateMachine(char command)
       while(1)  // Stay here until we are *told* to leave.
       {
         // If there's data in the serial buffer, move it to the cmdBuffer.
-        if (bufferSize > 0)
+        if (getBufferSize() > 0)
         {
           cmdBuffer[cmdBufferPtr++] = serialBufferPop();
         }
@@ -106,7 +105,7 @@ void uiStateMachine(char command)
     case ADJ_BAUD_RATE:
       while(1)  // Stay here until we are *told* to leave.
       {
-        if (bufferSize > 0)
+        if (getBufferSize() > 0)
         {
           cmdBuffer[cmdBufferPtr++] = serialBufferPop();
         }
@@ -149,7 +148,7 @@ void uiStateMachine(char command)
     case ADJ_TEXT_X: // This is the x-origin of our text "window".
       while(1)  // Stay here until we are *told* to leave.
       {
-        if (bufferSize > 0)
+        if (getBufferSize() > 0)
         {
           cmdBuffer[cmdBufferPtr++] = serialBufferPop();
         }
@@ -175,7 +174,7 @@ void uiStateMachine(char command)
     case ADJ_TEXT_Y:
       while(1)  // Stay here until we are *told* to leave.
       {
-        if (bufferSize > 0)
+        if (getBufferSize() > 0)
         {
           cmdBuffer[cmdBufferPtr++] = serialBufferPop();
         }
@@ -201,7 +200,7 @@ void uiStateMachine(char command)
     case DRAW_PIXEL:
       while(1)  // Stay here until we are *told* to leave.
       {
-        if (bufferSize > 0)
+        if (getBufferSize() > 0)
         {
           cmdBuffer[cmdBufferPtr++] = serialBufferPop();
         }
@@ -221,7 +220,7 @@ void uiStateMachine(char command)
     case DRAW_LINE:      
     while(1)  // Stay here until we are *told* to leave.
       {
-        if (bufferSize > 0)
+        if (getBufferSize() > 0)
         {
           cmdBuffer[cmdBufferPtr++] = serialBufferPop();
         }
@@ -244,7 +243,7 @@ void uiStateMachine(char command)
     case DRAW_CIRCLE:      
     while(1)  // Stay here until we are *told* to leave.
       {
-        if (bufferSize > 0)
+        if (getBufferSize() > 0)
         {
           cmdBuffer[cmdBufferPtr++] = serialBufferPop();
         }
@@ -265,7 +264,7 @@ void uiStateMachine(char command)
     case DRAW_BOX:    
     while(1)  // Stay here until we are *told* to leave.
       {
-        if (bufferSize > 0)
+        if (getBufferSize() > 0)
         {
           cmdBuffer[cmdBufferPtr++] = serialBufferPop();
         }
@@ -286,7 +285,7 @@ void uiStateMachine(char command)
     case ERASE_BLOCK:    
     while(1)  // Stay here until we are *told* to leave.
       {
-        if (bufferSize > 0)
+        if (getBufferSize() > 0)
         {
           cmdBuffer[cmdBufferPtr++] = serialBufferPop();
         }
@@ -304,7 +303,7 @@ void uiStateMachine(char command)
     case DRAW_SPRITE:      
     while(1)  // Stay here until we are *told* to leave.
       {
-        if (bufferSize > 0)
+        if (getBufferSize() > 0)
         {
           cmdBuffer[cmdBufferPtr++] = serialBufferPop();
         }

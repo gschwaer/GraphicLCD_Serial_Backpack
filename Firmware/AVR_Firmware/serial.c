@@ -24,7 +24,6 @@ This code is released under the Creative Commons Attribution Share-Alike 3.0
 extern volatile uint8_t   rxRingBuffer[BUF_DEPTH];
 extern volatile uint16_t  rxRingHead;
 extern volatile uint16_t  rxRingTail;
-extern volatile uint8_t   bufferSize;
 extern volatile uint8_t   rx_pause; // 1 if RX has been suspended
 
 #define XON            0x11
@@ -102,15 +101,29 @@ void putLine(char *TXData)
   putChar('\r');
 }
 
+//I removed the old bufferSize variable because this was not interrupt save and
+//adding cli() sti() seemed overkill. Instead we just take the difference between
+//read and write pointer of the ring buffer as current buffer content size.
+//Before this change the interrupt could kill the buffer if it happened to fire at
+//bufferSize-- in serialBufferPop.
+inline uint16_t getBufferSize(void)
+{
+  uint16_t head = rxRingHead;
+  uint16_t tail = rxRingTail;
+  if(head >= tail)
+    return head - tail;
+  else
+    return (head + BUF_DEPTH) - tail;
+}
+
 // Grab the top byte off the serial FIFO and return it, adjusting the pointers
 //  and size of the FIFO accordingly.
 char serialBufferPop(void)
 {
-  bufferSize--;
   char retVal = rxRingBuffer[rxRingTail++];
   if (rxRingTail == BUF_DEPTH) rxRingTail = 0;
 
-  if(bufferSize < RX_BUFFER_XON && rx_pause == 1){
+  if(getBufferSize() < RX_BUFFER_XON && rx_pause == 1){
     putChar(XON);
     rx_pause = 0;
   }
@@ -122,7 +135,6 @@ char serialBufferPop(void)
 //  the buffer, it just resets the size and the pointers.
 void clearBuffer(void)
 {
-  bufferSize = 0;
   rxRingTail = 0;
   rxRingHead = 0;
 }

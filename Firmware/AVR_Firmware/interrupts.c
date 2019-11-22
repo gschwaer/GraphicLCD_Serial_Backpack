@@ -19,7 +19,6 @@ This code is released under the Creative Commons Attribution Share-Alike 3.0
 extern volatile uint8_t 	rxRingBuffer[BUF_DEPTH];
 extern volatile uint16_t 	rxRingHead;
 extern volatile uint16_t	rxRingTail;
-extern volatile uint8_t	 bufferSize;
 extern volatile uint8_t 	rx_pause;
 
 #define XOFF           0x13
@@ -32,10 +31,9 @@ extern volatile uint8_t 	rx_pause;
 ISR(USART_RX_vect)
 {
 	if (rxRingHead == BUF_DEPTH) rxRingHead = 0;
-	bufferSize++;
 	rxRingBuffer[rxRingHead++] = UDR0;
 
-	if(bufferSize > RX_BUFFER_XOFF){
+	if(getBufferSize() > RX_BUFFER_XOFF){
 		putChar(XOFF);
 		rx_pause = 1;
 	}

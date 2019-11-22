@@ -27,7 +27,6 @@ This code is released under the Creative Commons Attribution Share-Alike 3.0
 //  global variables that may be needed to make decisions elsewhere.
 enum DISPLAY_TYPE   display = SMALL;
 volatile uint8_t    rxRingBuffer[BUF_DEPTH];
-volatile uint8_t    bufferSize = 0;
 volatile uint16_t   rxRingHead = 0;
 volatile uint16_t   rxRingTail = 0;
 volatile uint8_t    reverse = 0;
@@ -91,7 +90,7 @@ int main(void)
   
   // If the user has send *any* character during the splash time, we should
   //  skip this switch and set our baud rate back to 115200.
-  if (bufferSize == 0)
+  if (getBufferSize() == 0)
   {
     switch(getBaudRate())
     {
@@ -139,7 +138,7 @@ int main(void)
   while(1)
   {
     // If there's *anything* in the buffer, we need to deal with it.
-    while (bufferSize > 0)
+    while (getBufferSize() > 0)
     {
       // serialBufferPop() pulls data from the top of the FIFO that comprises
       //  our serial port buffer, automatically changing the pointers and
@@ -148,7 +147,7 @@ int main(void)
       // If the character received is the command escape character ('|')...
       if (bufferChar == '|')
       {
-        while (bufferSize == 0);    // ...wait for the next character...
+        while (getBufferSize() == 0);    // ...wait for the next character...
         bufferChar = serialBufferPop(); // ...fetch the character..
         uiStateMachine(bufferChar); // ... then see what to do.
         // Note that we won't return from the state machine until the command

@@ -34,5 +34,6 @@ void putBin(uint8_t TXData);
 void putLine(char *TXData);
 char serialBufferPop(void);
 void clearBuffer(void);
+uint16_t getBufferSize(void);
 
 #endif
