@@ -121,10 +121,8 @@ inline uint16_t getBufferSize(void)
 //  and size of the FIFO accordingly.
 char serialBufferPop(void)
 {
-  cli();
   char retVal = rxRingBuffer[rxRingTail++];
   if (rxRingTail == BUF_DEPTH) rxRingTail = 0;
-  sei();
 
   if(getBufferSize() < RX_BUFFER_XON && rx_pause == 1){
     putChar(XON);

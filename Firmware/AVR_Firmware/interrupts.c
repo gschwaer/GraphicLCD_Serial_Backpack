@@ -30,10 +30,8 @@ extern volatile uint8_t 	rx_pause;
 //  than two or three bytes.
 ISR(USART_RX_vect)
 {
-	cli();
-	if (rxRingHead == BUF_DEPTH) rxRingHead = 0;
 	rxRingBuffer[rxRingHead++] = UDR0;
-	sei();
+	if (rxRingHead == BUF_DEPTH) rxRingHead = 0;
 
 	if(getBufferSize() > RX_BUFFER_XOFF){
 		putChar(XOFF);
