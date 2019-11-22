@@ -282,6 +282,21 @@ void lcdDrawBox(uint8_t p1x, uint8_t p1y, uint8_t p2x, uint8_t p2y, PIX_VAL pixe
 	lcdDrawLine(p2x, p2y, p2x, p1y, pixel);
 }
 
+static void lcdDrawPixelColumn(uint8_t x, uint8_t y, uint8_t colData)
+{
+  if (display == SMALL)
+  {
+    if (x<xDim && y<yDim)
+    {
+      ks0108bDrawPixelColumn(x, y, colData);
+    }
+  }
+  else if (display == LARGE)
+  {
+    /* NOT SUPPORTED - I ONLY HAVE A SMALL SCREEN */
+  }
+}
+
 // This is the by-pixel character rendering function. At this point, there's no
 //  support for the t6963 built-in character generator. Get on that, won't you?
 void lcdDrawChar(char printMe)
@@ -373,10 +388,19 @@ void lcdDrawChar(char printMe)
     for (uint8_t x = cursorPos[0]; x<cursorPos[0]+5; x++)
     {
       uint8_t colTemp = pgm_read_byte(&characterArray[charOffset++]);
-      for (uint8_t y = cursorPos[1]; y<cursorPos[1]+8; y++)
+      if (display == SMALL)
       {
-        if ((colTemp>>(y-cursorPos[1]))&0x01) lcdDrawPixel(x,y,ON);
-        else lcdDrawPixel(x,y,OFF);
+        //print the characters pixel by column instead of slow pixel wise
+        //printing; this was only tested for SMALL displays
+        lcdDrawPixelColumn(x, cursorPos[1], colTemp);
+      }
+      else if (display == LARGE)
+      {
+        for (uint8_t y = cursorPos[1]; y<cursorPos[1]+8; y++)
+        {
+          if ((colTemp>>(y-cursorPos[1]))&0x01) lcdDrawPixel(x,y,ON);
+          else lcdDrawPixel(x,y,OFF);
+        }
       }
     }
     cursorPos[0] += 6;  // Increment our x position by one character space.

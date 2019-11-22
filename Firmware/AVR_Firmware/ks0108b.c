@@ -228,6 +228,18 @@ void ks0108bReadBlock(uint8_t x, uint8_t y, uint8_t *buffer)
   }
 }
 
+void ks0108bDrawPixelColumn(uint8_t x, uint8_t y, uint8_t colData)
+{
+  ks0108bSetColumn(x);  // x is simple; it's just the x coordinate.
+  ks0108bSetPage(y/8);  // y is less simple; we need to find the page that the
+                        //  pixel in question resides on.
+  if (reverse != 0)
+  {
+    colData = ~colData;
+  }
+  ks0108bWriteData(colData);
+}
+
 // This is the display-specific pixel draw command. Pretty simple- located the
 //  pixel's row and column, read the existing data, twiddle the single pixel
 //  according to what we want it to end up being, then re-write the whole
