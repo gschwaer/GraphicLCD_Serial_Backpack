@@ -25,8 +25,9 @@ This code is released under the Creative Commons Attribution Share-Alike 3.0
 extern volatile uint8_t   rxRingBuffer[BUF_DEPTH];
 extern volatile uint16_t  rxRingHead;
 extern volatile uint16_t  rxRingTail;
+extern volatile uint8_t   rxRingBufferOverflowed;
 
-#define XON            0x11
+#define XON     0x11
 
 // Initialize the serial port hardware.
 void serialInit(uint16_t baudRate)
@@ -123,7 +124,7 @@ char serialBufferPop(void)
   char retVal = rxRingBuffer[rxRingTail++];
   if (rxRingTail == BUF_DEPTH) rxRingTail = 0;
 
-  if(getBufferSize() < RX_BUFFER_XON){
+  if (rxRingBufferOverflowed && getBufferSize() < RX_BUFFER_XON) {
     putChar(XON);
   }
 

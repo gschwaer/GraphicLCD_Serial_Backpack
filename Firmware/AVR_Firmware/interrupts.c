@@ -18,9 +18,10 @@ This code is released under the Creative Commons Attribution Share-Alike 3.0
 
 extern volatile uint8_t 	rxRingBuffer[BUF_DEPTH];
 extern volatile uint16_t 	rxRingHead;
-extern volatile uint16_t	rxRingTail;
+extern volatile uint16_t 	rxRingTail;
+extern volatile uint8_t 	rxRingBufferOverflowed;
 
-#define XOFF           0x13
+#define XOFF	0x13
 
 // Handler for USART receive interrupts. This is basically just a stack push
 //  for the FIFO we use to store incoming commands. Note that there is no
@@ -32,7 +33,11 @@ ISR(USART_RX_vect)
 	rxRingBuffer[rxRingHead++] = UDR0;
 	if (rxRingHead == BUF_DEPTH) rxRingHead = 0;
 
-	if(getBufferSize() > RX_BUFFER_XOFF){
+	uint16_t bufferSize = getBufferSize();
+	if (bufferSize > RX_BUFFER_XOFF) {
+		rxRingBufferOverflowed = 1;
 		putChar(XOFF);
+	} else if (bufferSize == 0) {
+		rxRingBufferOverflowed = 0; // resetting in interrupt to avoid using cli&sei
 	}
 }

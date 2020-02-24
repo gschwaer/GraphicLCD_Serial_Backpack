@@ -18,7 +18,7 @@ This code is released under the Creative Commons Attribution Share-Alike 3.0
 
 // software flow control
 #define RX_BUFFER_XON  10
-#define RX_BUFFER_XOFF (BUF_DEPTH - 90)
+#define RX_BUFFER_XOFF (BUF_DEPTH - 32)
 
 // These typedefs will be used throughout the project to track the type of
 //  display we're using as well as whether we want the pixel(s) at the heart

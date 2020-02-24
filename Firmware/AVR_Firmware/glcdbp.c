@@ -30,6 +30,7 @@ volatile uint8_t    rxRingBuffer[BUF_DEPTH];
 volatile uint16_t   rxRingHead = 0;
 volatile uint16_t   rxRingTail = 0;
 volatile uint8_t    reverse = 0;
+volatile uint8_t    rxRingBufferOverflowed = 0;
 
 int main(void)
 {
